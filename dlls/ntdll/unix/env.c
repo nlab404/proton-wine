@@ -743,15 +743,23 @@ static void init_locale(void)
 
 #ifdef __ANDROID__
     {
-        const char *host_locale = getenv( "HOST_LC_ALL" );
+        /*
+         * Bionic does not expose locales such as ja_JP.UTF-8 through
+         * setlocale(). Use the requested environment locale only for
+         * Windows locale selection.
+         */
+        const char *requested_locale = getenv( "HOST_LC_ALL" );
 
-        if (host_locale && host_locale[0])
+        if (!requested_locale || !requested_locale[0])
+            requested_locale = getenv( "LC_ALL" );
+
+        if (requested_locale && requested_locale[0])
         {
             TRACE_(nls)( "Android Windows locale override: %s\n",
-                         debugstr_a(host_locale) );
+                         debugstr_a(requested_locale) );
 
-            ctype = host_locale;
-            messages = host_locale;
+            ctype = requested_locale;
+            messages = requested_locale;
         }
     }
 #endif

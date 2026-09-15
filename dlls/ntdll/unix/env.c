@@ -741,6 +741,21 @@ static void init_locale(void)
     if (!(messages = setlocale( LC_MESSAGES, "" )) && (messages = getenv( "LC_MESSAGES" )))
         FIXME_(nls)( "Failed to set LC_MESSAGES to %s, is the locale supported?\n", debugstr_a(messages) );
 
+#ifdef __ANDROID__
+    {
+        const char *host_locale = getenv( "HOST_LC_ALL" );
+
+        if (host_locale && host_locale[0])
+        {
+            TRACE_(nls)( "Android Windows locale override: %s\n",
+                         debugstr_a(host_locale) );
+
+            ctype = host_locale;
+            messages = host_locale;
+        }
+    }
+#endif
+
     if (!unix_to_win_locale( ctype, system_locale )) system_locale[0] = 0;
     TRACE_(nls)( "Unix LC_CTYPE is %s, setting system locale to %s\n", debugstr_a(ctype), debugstr_a(user_locale) );
 

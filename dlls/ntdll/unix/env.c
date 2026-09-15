@@ -742,17 +742,16 @@ static void init_locale(void)
         FIXME_(nls)( "Failed to set LC_MESSAGES to %s, is the locale supported?\n", debugstr_a(messages) );
 
 #ifdef __ANDROID__
-{
-    const char *requested_locale = getenv( "LC_ALL" );
-
-    if (requested_locale && requested_locale[0])
+    /*
+     * Android/Bionic may return "C" from setlocale() even when
+     * LC_ALL specifies the locale we want for Windows.
+     */
     {
-        TRACE_(nls)( "Android Windows locale override: %s\n",
-                     debugstr_a(requested_locale) );
+        const char *locale = getenv( "LC_ALL" );
 
-        ctype = requested_locale;
+        if (locale && locale[0])
+            ctype = locale;
     }
-}
 #endif
 
     if (!unix_to_win_locale( ctype, system_locale )) system_locale[0] = 0;

@@ -168,7 +168,7 @@ jobs:
           cat > $GITHUB_WORKSPACE/profile.json << EOF
           {
             "type": "Proton",
-            "versionName": "10.0-4-${ARCH_NAME}",
+            "versionName": "10.0-4-el-${ARCH_NAME}",
             "versionCode": 2,
             "description": "Proton 10.0-4 ${ARCH_NAME} - Windows compatibility layer with improved gaming support",
             "files": [],
@@ -184,7 +184,7 @@ jobs:
           cat > $GITHUB_WORKSPACE/profile-wine.json << EOF
           {
             "type": "Wine",
-            "versionName": "10.0-4-${ARCH_NAME}",
+            "versionName": "10.0-4-el-${ARCH_NAME}",
             "versionCode": 0,
             "description": "Proton 10.0-4 ${ARCH_NAME} - Windows compatibility layer with improved gaming support",
             "files": [],
